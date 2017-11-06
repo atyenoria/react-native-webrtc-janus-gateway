@@ -21,14 +21,15 @@ import {
   getUserMedia,
 } from 'react-native-webrtc';
 
+import Janus from './janus.mobile.js';
 
+import config from './config.js';
 
+let server = config.JanusWssHost
 
-var server = ""
-
-var janus = null;
-var sfutest = null;
-var started = false;
+let janus;
+let sfutest = null;
+let started = false;
 
 var myusername = null;
 var myid = null;
@@ -42,7 +43,7 @@ var localstream_janus
 
 // $(document).ready(function() {
     // Initialize the library (all console debuggers enabled)
-var Janus = require('./janus.mobile.js');
+
     Janus.init({debug: "all", callback: function() {
             if(started)
                 return;
@@ -65,7 +66,6 @@ var Janus = require('./janus.mobile.js');
                                 },
                                 error: function(error) {
                                     Janus.error("  -- Error attaching plugin...", error);
-                                    bootbox.alert("Error attaching plugin... " + error);
                                 },
                                 consentDialog: function(on) {
                                 },
@@ -74,7 +74,6 @@ var Janus = require('./janus.mobile.js');
                                 },
                                 webrtcState: function(on) {
                                     Janus.log("Janus says our WebRTC PeerConnection is " + (on ? "up" : "down") + " now");
-                                    // $("#videolocal").parent().parent().unblock();
                                 },
                                 onmessage: function(msg, jsep) {
                                     Janus.debug(" ::: Got a message (publisher) :::");
