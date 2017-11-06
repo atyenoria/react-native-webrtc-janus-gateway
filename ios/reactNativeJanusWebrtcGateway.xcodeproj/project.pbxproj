@@ -46,6 +46,7 @@
 		3884DCBD1FB03A930059D6E8 /* libc.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3884DCBC1FB03A930059D6E8 /* libc.tbd */; };
 		3884DCBF1FB03A9C0059D6E8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3884DCBE1FB03A9C0059D6E8 /* libsqlite3.tbd */; };
 		3884DCC11FB03AA30059D6E8 /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3884DCC01FB03AA30059D6E8 /* libstdc++.tbd */; };
+		3884DCD01FB0402B0059D6E8 /* libRCTWebRTC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 38518D631FB02EBC00A8DE7A /* libRCTWebRTC.a */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
@@ -387,6 +388,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3884DCD01FB0402B0059D6E8 /* libRCTWebRTC.a in Frameworks */,
 				3884DCBB1FB03A8B0059D6E8 /* VideoToolbox.framework in Frameworks */,
 				3884DCB91FB03A7D0059D6E8 /* CoreVideo.framework in Frameworks */,
 				3884DCB71FB03A710059D6E8 /* CoreAudio.framework in Frameworks */,
