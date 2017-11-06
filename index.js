@@ -46,25 +46,6 @@ Janus.init({debug: "all", callback: function() {
 }});
 
 
-function publishOwnFeed(useAudio) {
-    sfutest.createOffer(
-        {
-            media: { audioRecv: false, videoRecv: false, audioSend: false, videoSend: false}, // Publishers are sendonly
-            success: function(jsep) {
-                Janus.debug("Got publisher SDP!");
-                Janus.debug(jsep);
-                var publish = { "request": "configure", "audio": useAudio, "video": true };
-                sfutest.send({"message": publish, "jsep": jsep});
-            },
-            error: function(error) {
-                Janus.error("WebRTC error:", error);
-                if (useAudio) {
-                     publishOwnFeed(false);
-                } else {
-                }
-            }
-        });
-}
 
 function toggleMute() {
     var muted = sfutest.isAudioMuted();
@@ -177,7 +158,7 @@ class reactNativeJanusWebrtcGateway extends Component{
                                     // Publisher/manager created, negotiate WebRTC and attach to existing feeds, if any
                                     myid = msg["id"];
                                     Janus.log("Successfully joined room " + msg["room"] + " with ID " + myid);
-                                    publishOwnFeed(true);
+                                    this.publishOwnFeed(true);
                                     // Any new feed to attach to?
                                     if(msg["publishers"] !== undefined && msg["publishers"] !== null) {
                                         var list = msg["publishers"];
@@ -293,6 +274,27 @@ class reactNativeJanusWebrtcGateway extends Component{
     });
   }
 
+
+    publishOwnFeed(useAudio){
+        sfutest.createOffer(
+            {
+                media: { audioRecv: false, videoRecv: false, audioSend: false, videoSend: false}, // Publishers are sendonly
+                success: function(jsep) {
+                    Janus.debug("Got publisher SDP!");
+                    Janus.debug(jsep);
+                    var publish = { "request": "configure", "audio": useAudio, "video": true };
+                    sfutest.send({"message": publish, "jsep": jsep});
+                },
+                error: function(error) {
+                    Janus.error("WebRTC error:", error);
+                    if (useAudio) {
+                        publishOwnFeed(false);
+                    } else {
+                    }
+                }
+            });
+    }
+
   newRemoteFeed(id, display) {
     let remoteFeed = null;
     janus.attach(
@@ -380,8 +382,8 @@ class reactNativeJanusWebrtcGateway extends Component{
           </TouchableHighlight>
         </View>
         <RTCView streamURL={this.state.selfViewSrc} style={styles.selfView}/>
-        {this.remoteList && this.remoteList.map((index) =>{
-            return <RTCView key={index} streamURL={this.remoteList[index].remote} style={styles.remoteView}/>
+        {this.state.remoteList && Object.keys(this.state.remoteList).map((key, index) => {
+            return <RTCView key={Math.floor(Math.random() * 1000)} streamURL={this.state.remoteList[key]} style={styles.remoteView}/>
           })
         }
       </View>
