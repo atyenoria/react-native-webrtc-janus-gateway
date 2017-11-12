@@ -1252,8 +1252,8 @@ import {
                       }
                       console.log("videoSourceId:" + videoSourceId)
                       getUserMedia({
-                        "audio": true,
-                        video: false,
+                        audio: true,
+                        video: true,
                          optional: [{sourceId: videoSourceId}]
                       }, function (stream) {
                         console.log(config)
@@ -1710,45 +1710,18 @@ import {
   
   
                   MediaStreamTrack.getSources(sourceInfos => {
-  
-                      var isFront = camera_front
                       console.log(sourceInfos);
-                      let videoSourceId;
-                      var camemera_mode=""
-                      if (callbacks.front_camera){
-                          camemera_mode="front"
-                      }else{
-                          camemera_mode="front"
-                      }
-  
-                      for (const i = 0; i < sourceInfos.length; i++) {
-                        const sourceInfo = sourceInfos[i];
-                        if(sourceInfo.kind == "video" && sourceInfo.facing == camemera_mode) {
-                          videoSourceId = sourceInfo.id;
-                        }
-                      }
-  
-                      // mandatory: {
-                      //           minWidth: 640, // Provide your own width, height and frame rate here
-                      //           minHeight: 480,
-                      //           minFrameRate: 30
-                      //         }
-                      // if (localStream) {
-                      //     localStream.getTracks().forEach((t) => {
-                      //         localStream.removeTrack(t);
-                      //     });
-                      //     localStream.release();
-                      // }
-  
                       getUserMedia({
                           audio: true,
-                          video: false
+                          video: {
+                            facingMode: (true ? "user" : "environment"),
+                          }
                       },  (stream) => {
-                          localStream = stream
-                        console.log("done stream")
+                        localStream = stream
+                        console.log("Succeeded to get the local camera!")
                         streamsDone(handleId, jsep, media, callbacks, stream)
                       }, (error) => {
-                        console.log("error stream")
+                        console.log("Failed to get the local camera!")
                         console.log(error)
                       }
                       )

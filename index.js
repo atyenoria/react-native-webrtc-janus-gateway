@@ -278,11 +278,11 @@ class reactNativeJanusWebrtcGateway extends Component{
     publishOwnFeed(useAudio){
         sfutest.createOffer(
             {
-                media: { audioRecv: false, videoRecv: false, audioSend: false, videoSend: false}, // Publishers are sendonly
+                media: { audioRecv: false, videoRecv: false, audioSend: true, videoSend: true}, // Publishers are sendonly
                 success: function(jsep) {
                     Janus.debug("Got publisher SDP!");
                     Janus.debug(jsep);
-                    var publish = { "request": "configure", "audio": useAudio, "video": true };
+                    var publish = { "request": "configure", "audio": true, "video": true };
                     sfutest.send({"message": publish, "jsep": jsep});
                 },
                 error: function(error) {
@@ -381,7 +381,7 @@ class reactNativeJanusWebrtcGateway extends Component{
             <Text>Switch camera</Text>
           </TouchableHighlight>
         </View>
-        <RTCView streamURL={this.state.selfViewSrc} style={styles.selfView}/>
+        <RTCView key={this.state.selfViewSrc} streamURL={this.state.selfViewSrc} style={styles.remoteView}/>
         {this.state.remoteList && Object.keys(this.state.remoteList).map((key, index) => {
             return <RTCView key={Math.floor(Math.random() * 1000)} streamURL={this.state.remoteList[key]} style={styles.remoteView}/>
           })

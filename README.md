@@ -9,6 +9,8 @@
 # TODO
 - [x] iOS works
 - [ ] Android works
+- [x] Local camera
+- [x] Remote view
 - [ ] Audio mute
 - [ ] Video mute
 - [ ] Unpublish and publish their own video
@@ -19,6 +21,8 @@
 # Setup
 - Set up the janus with wss configured following by https://github.com/atyenoria/janus-webrtc-gateway-docker
 - Change config.example.js to config.js and edit the content as you configured about Janus
+- Code Signing for building on real device
+- change the node path for you env, Build Phases -> Bundle React Native code and images ("export NODE_BINARY=/Users/jima/.nodebrew/current/bin/node")
 - Build the iOS project
 
 # License
