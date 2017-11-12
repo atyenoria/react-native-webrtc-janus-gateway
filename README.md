@@ -25,9 +25,9 @@
 - [x] Audio Speaker 
 - [x] Unpublish and publish 
 - [x] Switch front and back camera with react-native-webrtc MediaStreamTrack.prototype._switchCamera()
-- [ ] End call
+- [x] End call
 - [ ] Solve the delay of receving remote viedeos increases when recreating the webrtc session by unpublish/publish 
-- [ ] Rerender teh video view if participants join and leave continuously
+- [x] Rerender teh video view if participants join and leave continuously
 - [ ] Rich UI
 - [ ] Refactor index.js and janus.mobile.js
 - [ ] More Details about how to use this Documentation

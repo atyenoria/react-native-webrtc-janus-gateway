@@ -158,30 +158,33 @@ class reactNativeJanusWebrtcGateway extends Component{
                                     // Any new feed to attach to?
                                     if(msg["publishers"] !== undefined && msg["publishers"] !== null) {
                                         var list = msg["publishers"];
-                                        Janus.debug("Got a list of available publishers/feeds:");
-                                        Janus.debug(list);
                                         for(var f in list) {
-                                            var id = list[f]["id"];
-                                            var display = list[f]["display"];
-                                            Janus.debug("  >> [" + id + "] " + display);
+                                            let id = list[f]["id"]
+                                            let display = list[f]["display"]
                                             this.newRemoteFeed(id, display)
-                                        }
+                                        }  
                                     } else if(msg["leaving"] !== undefined && msg["leaving"] !== null) {
-                                        // One of the publishers has gone away?
+                                        console.log(msg["leaving"])
+                                        
+
                                         var leaving = msg["leaving"];
                                         Janus.log("Publisher left: " + leaving);
                                         var remoteFeed = null;
-                                        for(var i=1; i<6; i++) {
-                                            if(feeds[i] != null && feeds[i] != undefined && feeds[i].rfid == leaving) {
-                                                remoteFeed = feeds[i];
-                                                break;
-                                            }
-                                        }
+                                        console.log(this.state.remoteList)
+                                        console.log(msg["leaving"])
+                                        let numLeaving = parseInt(msg["leaving"])
+                                        delete this.state.remoteList.numLeaving
+                                        this.setState({remoteList: this.state.remoteList})
+
+                                       
+                                        
                                         if(remoteFeed != null) {
                                             Janus.debug("Feed " + remoteFeed.rfid + " (" + remoteFeed.rfdisplay + ") has left the room, detaching");
                                             feeds[remoteFeed.rfindex] = null;
                                             remoteFeed.detach();
                                         }
+
+
                                     } else if(msg["unpublished"] !== undefined && msg["unpublished"] !== null) {
                                         // One of the publishers has unpublished?
                                         var unpublished = msg["unpublished"];
@@ -233,6 +236,8 @@ class reactNativeJanusWebrtcGateway extends Component{
             }
         })
   }
+
+
 
     switchVideoType() {
         sfutest.changeLocalCamera();
@@ -353,7 +358,7 @@ class reactNativeJanusWebrtcGateway extends Component{
                     console.log('onaddstream', stream);
                     this.setState({info: 'One peer join!'});
                     const remoteList = this.state.remoteList;
-                    remoteList[remoteFeed.getId()] = stream.toURL();
+                    remoteList[id] = stream.toURL();
                     this.setState({ remoteList: remoteList });
             },
             oncleanup: () => {
