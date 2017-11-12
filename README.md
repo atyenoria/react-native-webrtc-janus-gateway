@@ -1,5 +1,5 @@
 # Libary Used in This Repo
-- "react-native": "0.50.1"
+- "react-native": "0.50.3"
 - "react-native-webrtc": "^1.58.3"
 
 # Functionality
