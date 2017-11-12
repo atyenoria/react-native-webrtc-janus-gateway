@@ -47,6 +47,8 @@
 		3884DCBF1FB03A9C0059D6E8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3884DCBE1FB03A9C0059D6E8 /* libsqlite3.tbd */; };
 		3884DCC11FB03AA30059D6E8 /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3884DCC01FB03AA30059D6E8 /* libstdc++.tbd */; };
 		3884DCD01FB0402B0059D6E8 /* libRCTWebRTC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 38518D631FB02EBC00A8DE7A /* libRCTWebRTC.a */; };
+		38CF61B41FB8889700FED670 /* RNInCallManagerBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 38CF61B21FB8889700FED670 /* RNInCallManagerBridge.m */; };
+		38CF61B51FB8889700FED670 /* RNInCallManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38CF61B31FB8889700FED670 /* RNInCallManager.swift */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
@@ -369,6 +371,10 @@
 		3884DCBC1FB03A930059D6E8 /* libc.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libc.tbd; path = usr/lib/libc.tbd; sourceTree = SDKROOT; };
 		3884DCBE1FB03A9C0059D6E8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		3884DCC01FB03AA30059D6E8 /* libstdc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.tbd"; path = "usr/lib/libstdc++.tbd"; sourceTree = SDKROOT; };
+		38CF618C1FB8889600FED670 /* reactNativeJanusWebrtcGateway-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "reactNativeJanusWebrtcGateway-Bridging-Header.h"; sourceTree = "<group>"; };
+		38CF61B11FB8889700FED670 /* RNInCallManager-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "RNInCallManager-Bridging-Header.h"; path = "../node_modules/react-native-incall-manager/ios/RNInCallManager/RNInCallManager-Bridging-Header.h"; sourceTree = "<group>"; };
+		38CF61B21FB8889700FED670 /* RNInCallManagerBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RNInCallManagerBridge.m; path = "../node_modules/react-native-incall-manager/ios/RNInCallManager/RNInCallManagerBridge.m"; sourceTree = "<group>"; };
+		38CF61B31FB8889700FED670 /* RNInCallManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RNInCallManager.swift; path = "../node_modules/react-native-incall-manager/ios/RNInCallManager/RNInCallManager.swift"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
@@ -526,10 +532,14 @@
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
+				38CF61B11FB8889700FED670 /* RNInCallManager-Bridging-Header.h */,
+				38CF61B31FB8889700FED670 /* RNInCallManager.swift */,
+				38CF61B21FB8889700FED670 /* RNInCallManagerBridge.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				38CF618C1FB8889600FED670 /* reactNativeJanusWebrtcGateway-Bridging-Header.h */,
 			);
 			name = reactNativeJanusWebrtcGateway;
 			sourceTree = "<group>";
@@ -754,6 +764,7 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = D44JHAT9Y7;
+						LastSwiftMigration = 0910;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1175,6 +1186,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				38CF61B41FB8889700FED670 /* RNInCallManagerBridge.m in Sources */,
+				38CF61B51FB8889700FED670 /* RNInCallManager.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1227,6 +1240,7 @@
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = D44JHAT9Y7;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1248,6 +1262,7 @@
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = D44JHAT9Y7;
@@ -1267,6 +1282,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = D44JHAT9Y7;
@@ -1282,6 +1298,9 @@
 					"-lc++",
 				);
 				PRODUCT_NAME = reactNativeJanusWebrtcGateway;
+				SWIFT_OBJC_BRIDGING_HEADER = "../node_modules/react-native-incall-manager/ios/RNInCallManager/RNInCallManager-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1290,6 +1309,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = D44JHAT9Y7;
@@ -1305,6 +1325,8 @@
 					"-lc++",
 				);
 				PRODUCT_NAME = reactNativeJanusWebrtcGateway;
+				SWIFT_OBJC_BRIDGING_HEADER = "../node_modules/react-native-incall-manager/ios/RNInCallManager/RNInCallManager-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

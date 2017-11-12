@@ -22,6 +22,7 @@ import {
 
 import Janus from './janus.mobile.js';
 import config from './config.js';
+import InCallManager from 'react-native-incall-manager';
 
 let server = config.JanusWssHost
 
@@ -108,20 +109,22 @@ class reactNativeJanusWebrtcGateway extends Component{
         super(props);
         this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => true});
         this.state ={ 
-        info: 'Initializing',
-        status: 'init',
-        roomID: '',
-        isFront: true,
-        selfViewSrc: null,
-        remoteList: {},
-        textRoomConnected: false,
-        textRoomData: [],
-        textRoomValue: '',
-        publish: false,
+            info: 'Initializing',
+            status: 'init',
+            roomID: '',
+            isFront: true,
+            selfViewSrc: null,
+            remoteList: {},
+            textRoomConnected: false,
+            textRoomData: [],
+            textRoomValue: '',
+            publish: false,
+            speaker: false
         };
     } 
 
   componentDidMount(){
+    InCallManager.start({ media: 'audio' });
     janus = new Janus(
         {
             server: server,
@@ -276,6 +279,18 @@ class reactNativeJanusWebrtcGateway extends Component{
         }
     }
 
+    toggleSpeaker = () => {
+        if(this.state.speaker){
+            this.setState({speaker: false});
+            InCallManager.setForceSpeakerphoneOn(false)
+        }else{
+            this.setState({speaker: true});
+            InCallManager.setForceSpeakerphoneOn(true)
+        }
+    }
+
+    
+
     publishOwnFeed(useAudio){
         if(!this.state.publish){
             this.setState({ publish: true });
@@ -403,7 +418,7 @@ class reactNativeJanusWebrtcGateway extends Component{
             </TouchableHighlight>
             <TouchableHighlight
             style={{borderWidth: 1, borderColor: 'black'}}
-            onPress={()=>{this._switchVideoType()}} >
+            onPress={()=>{this.toggleSpeaker()}} >
                 <Text style={{fontSize: 20}}>Speaker ON/OFF</Text>
             </TouchableHighlight>
         </View>
