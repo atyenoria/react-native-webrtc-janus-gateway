@@ -68,29 +68,6 @@ function unpublishOwnFeed() {
 const pcPeers = {};
 let localStream;
 
-function getLocalStream(isFront, callback) {
-  MediaStreamTrack.getSources(sourceInfos => {
-    console.log(sourceInfos);
-    let videoSourceId;
-    for (const i = 0; i < sourceInfos.length; i++) {
-      const sourceInfo = sourceInfos[i];
-      if(sourceInfo.kind == "video" && sourceInfo.facing == (isFront ? "front" : "back")) {
-        videoSourceId = sourceInfo.id;
-      }
-    }
-    getUserMedia({
-      "audio": true,
-      "video": {
-        optional: [{sourceId: videoSourceId}]
-      }
-    }, function (stream) {
-      console.log('dddd', stream);
-      callback(stream);
-    }, logError);
-  });
-}
-
-
 
 function getStats() {
   const pc = pcPeers[Object.keys(pcPeers)[0]];
@@ -252,7 +229,7 @@ class reactNativeJanusWebrtcGateway extends Component{
             error: function(error) {
             },
             destroyed: function() {
-                window.location.reload();
+              console.log("destoryed")
             }
         })
   }
@@ -289,6 +266,9 @@ class reactNativeJanusWebrtcGateway extends Component{
         }
     }
 
+    endCall = () => {
+        janus.destroy()
+    }
     
 
     publishOwnFeed(useAudio){
@@ -296,7 +276,7 @@ class reactNativeJanusWebrtcGateway extends Component{
             this.setState({ publish: true });
             sfutest.createOffer(
                 {
-                    media: { audioRecv: false, videoRecv: false, audioSend: useAudio, videoSend: true}, // Publishers are sendonly
+                    media: { audioRecv: false, videoRecv: false, audioSend: useAudio, videoSend: true},
                     success: function(jsep) {
                         Janus.debug("Got publisher SDP!");
                         Janus.debug(jsep);
@@ -420,6 +400,11 @@ class reactNativeJanusWebrtcGateway extends Component{
             style={{borderWidth: 1, borderColor: 'black'}}
             onPress={()=>{this.toggleSpeaker()}} >
                 <Text style={{fontSize: 20}}>Speaker ON/OFF</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+            style={{borderWidth: 1, borderColor: 'black'}}
+            onPress={()=>{this.endCall()}} >
+                <Text style={{fontSize: 20}}>End Call</Text>
             </TouchableHighlight>
         </View>
         <RTCView key={this.state.selfViewSrc} streamURL={this.state.selfViewSrc} style={styles.remoteView}/>
