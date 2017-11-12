@@ -1,21 +1,30 @@
-# Libary Used in This Repo
-- "react-native": "0.50.3"
+# Libary used in this Repo
+- "react-native": "^0.50.3",
 - "react-native-webrtc": "^1.58.3"
+- "react-native-incall-manager": "^2.2.0",
 
 # Functionality
 - Janus WebRTC Gateway Video Room Implementation
 - Mobile Users can send teh audio and video msg to other paritciapnts up to 6 max (can configure in janus)
 
+# How it wokrs?
+
+# Application
+
 # TODO
 - [x] iOS works
 - [ ] Android works
-- [x] Local camera
+- [x] Janus Plugin Demo: Video Room works ( https://janus.conf.meetecho.com/videoroomtest.html )
+- [x] Local camera view
 - [x] Remote view
 - [ ] Audio mute
 - [ ] Video mute
+- [ ] Audio Speaker 
 - [ ] Unpublish and publish their own video
-- [ ] Switch front and back camera
+- [x] Switch front and back camera with react-native-webrtc MediaStreamTrack.prototype._switchCamera()
 - [ ] Refactor index.js and janus.mobile.js
+- [ ] More Details about how to use this Documentation
+- [ ] Other Janus Plugin(Audio bridge, Streaming, Sip, Call plugin)
 - [ ] Any Requst? Could you make the issue in this repo?
 
 # Setup
@@ -27,3 +36,6 @@
 
 # License
 - MIT
+
+# Contributor
+- atyenoria (Akinori Nakajima )

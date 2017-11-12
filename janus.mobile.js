@@ -850,7 +850,7 @@ import {
                           muteVideo : function() { return mute(handleId, true, true); },
                           unmuteVideo : function() { return mute(handleId, true, false); },
                           getBitrate : function() { return getBitrate(handleId); },
-                          changeLocalCamera : function(value) { return changeLocalCamera(value); },
+                          changeLocalCamera : function(isFront) { return changeLocalCamera(handleId, isFront); },
                           send : function(callbacks) { sendMessage(handleId, callbacks); },
                           data : function(callbacks) { sendData(handleId, callbacks); },
                           dtmf : function(callbacks) { sendDtmf(handleId, callbacks); },
@@ -932,7 +932,7 @@ import {
                           muteVideo : function() { return mute(handleId, true, true); },
                           unmuteVideo : function() { return mute(handleId, true, false); },
                           getBitrate : function() { return getBitrate(handleId); },
-                          changeLocalCamera : function() { return changeLocalCamera(handleId); },
+                          changeLocalCamera : function(isFront) { return changeLocalCamera(handleId, isFront); },
                           send : function(callbacks) { sendMessage(handleId, callbacks); },
                           data : function(callbacks) { sendData(handleId, callbacks); },
                           dtmf : function(callbacks) { sendDtmf(handleId, callbacks); },
@@ -1237,47 +1237,7 @@ import {
   
       // WebRTC stuff
       function changeLocalCamera(handleId) {
-          console.log(handleId)
-          var pluginHandle = pluginHandles[handleId];
-          var config = pluginHandle.webrtcStuff;
-          MediaStreamTrack.getSources(sourceInfos => {
-                      var isFront = true
-                      console.log(sourceInfos);
-                      let videoSourceId;
-                      for (const i = 0; i < sourceInfos.length; i++) {
-                        const sourceInfo = sourceInfos[i];
-                        if(sourceInfo.kind == "video" && sourceInfo.facing == "front") {
-                          videoSourceId = sourceInfo.id;
-                        }
-                      }
-                      console.log("videoSourceId:" + videoSourceId)
-                      getUserMedia({
-                        audio: true,
-                        video: true,
-                         optional: [{sourceId: videoSourceId}]
-                      }, function (stream) {
-                        console.log(config)
-                        config.myStream.release()
-                        config.pc.removeStream(config.myStream)
-                        config.pc.removeStream(localstream)
-  
-                        setTimeout(()=> {
-                          localstream.release()
-                          localstream = stream;
-                          // config.myStream = localstream;
-                          config.pc.addStream(localstream);
-                          pluginHandle.onlocalstream(localstream);
-  
-                          createOffer(handleId)
-  
-                        },2000)
-  
-                      }, (error) =>{
-                        console.log(error)
-                      }
-                      );
-          });
-  
+          localstream._tracks[1]._switchCamera()             
       }
   
       function streamsDone(handleId, jsep, media, callbacks, stream) {
@@ -1673,42 +1633,7 @@ import {
               // If we got here, we're not screensharing
               if(media === null || media === undefined || media.video !== 'screen') {
                   // Check whether all media sources are actually available or not
-                  // navigator.mediaDevices.enumerateDevices().then(function(devices) {
-                  //     var audioExist = devices.some(function(device) {
-                  //         return device.kind === 'audioinput';
-                  //     }),
-                  //     videoExist = devices.some(function(device) {
-                  //         return device.kind === 'videoinput';
-                  //     });
-  
-                  //     // Check whether a missing device is really a problem
-                  //     var audioSend = isAudioSendEnabled(media);
-                  //     var videoSend = isVideoSendEnabled(media);
-                  //     if(audioSend || videoSend) {
-                  //         // We need to send either audio or video
-                  //         var haveAudioDevice = audioSend ? audioExist : false;
-                  //         var haveVideoDevice = videoSend ? videoExist : false;
-                  //         if(!haveAudioDevice && !haveVideoDevice) {
-                  //             // FIXME Should we really give up, or just assume recvonly for both?
-                  //             pluginHandle.consentDialog(false);
-                  //             callbacks.error('No capture device found');
-                  //             return false;
-                  //         }
-                  //     }
-  
-                  //     navigator.mediaDevices.getUserMedia({
-                  //         audio: audioExist ? audioSupport : false,
-                  //         video: videoExist ? videoSupport : false
-                  //     })
-                  //     .then(function(stream) { pluginHandle.consentDialog(false); streamsDone(handleId, jsep, media, callbacks, stream); })
-                  //     .catch(function(error) { pluginHandle.consentDialog(false); callbacks.error({code: error.code, name: error.name, message: error.message}); });
-                  // })
-                  // .catch(function(error) {
-                  //     pluginHandle.consentDialog(false);
-                  //     callbacks.error('enumerateDevices error', error);
-                  // });
-  
-  
+
                   MediaStreamTrack.getSources(sourceInfos => {
                       console.log(sourceInfos);
                       getUserMedia({

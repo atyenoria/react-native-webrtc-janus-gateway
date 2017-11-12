@@ -254,24 +254,7 @@ class reactNativeJanusWebrtcGateway extends Component{
   }
 
   _switchVideoType() {
-    const isFront = !this.state.isFront;
-    this.setState({isFront});
-    getLocalStream(isFront, function(stream) {
-      if (localStream) {
-        for (const id in pcPeers) {
-          const pc = pcPeers[id];
-          pc && pc.removeStream(localStream);
-        }
-        localStream.release();
-      }
-      localStream = stream;
-      this.setState({selfViewSrc: stream.toURL()});
-
-      for (const id in pcPeers) {
-        const pc = pcPeers[id];
-        pc && pc.addStream(localStream);
-      }
-    });
+    sfutest.changeLocalCamera();
   }
 
 
@@ -377,7 +360,7 @@ class reactNativeJanusWebrtcGateway extends Component{
           </Text>
           <TouchableHighlight
             style={{borderWidth: 1, borderColor: 'black'}}
-            onPress={this._switchVideoType}>
+            onPress={()=>{this._switchVideoType()}} >
             <Text>Switch camera</Text>
           </TouchableHighlight>
         </View>
