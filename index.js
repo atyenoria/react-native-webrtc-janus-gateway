@@ -117,6 +117,7 @@ class reactNativeJanusWebrtcGateway extends Component{
         textRoomConnected: false,
         textRoomData: [],
         textRoomValue: '',
+        publish: false,
         };
     } 
 
@@ -253,29 +254,54 @@ class reactNativeJanusWebrtcGateway extends Component{
         })
   }
 
-  _switchVideoType() {
-    sfutest.changeLocalCamera();
-  }
+    switchVideoType() {
+        sfutest.changeLocalCamera();
+    }
 
+    toggleAudioMute = () => {
+        let muted = sfutest.isAudioMuted();
+        if(muted){
+            sfutest.unmuteAudio();
+        }else{
+            sfutest.muteAudio();
+        }
+    }
+
+    toggleVideoMute = () => {
+        let muted = sfutest.isVideoMuted();
+        if(muted){
+            sfutest.unmuteVideo();
+        }else{
+            sfutest.muteVideo();
+        }
+    }
 
     publishOwnFeed(useAudio){
-        sfutest.createOffer(
-            {
-                media: { audioRecv: false, videoRecv: false, audioSend: true, videoSend: true}, // Publishers are sendonly
-                success: function(jsep) {
-                    Janus.debug("Got publisher SDP!");
-                    Janus.debug(jsep);
-                    var publish = { "request": "configure", "audio": true, "video": true };
-                    sfutest.send({"message": publish, "jsep": jsep});
-                },
-                error: function(error) {
-                    Janus.error("WebRTC error:", error);
-                    if (useAudio) {
-                        publishOwnFeed(false);
-                    } else {
+        if(!this.state.publish){
+            this.setState({ publish: true });
+            sfutest.createOffer(
+                {
+                    media: { audioRecv: false, videoRecv: false, audioSend: useAudio, videoSend: true}, // Publishers are sendonly
+                    success: function(jsep) {
+                        Janus.debug("Got publisher SDP!");
+                        Janus.debug(jsep);
+                        var publish = { "request": "configure", "audio": useAudio, "video": true };
+                        sfutest.send({"message": publish, "jsep": jsep});
+                    },
+                    error: function(error) {
+                        Janus.error("WebRTC error:", error);
+                        if (useAudio) {
+                            publishOwnFeed(false);
+                        } else {
+                        }
                     }
-                }
-            });
+                });
+        }else{
+            this.setState({ publish: false });
+            let unpublish = { "request": "unpublish" };
+            sfutest.send({"message": unpublish});
+            sfutest.send({"message": unpublish});
+        }
     }
 
   newRemoteFeed(id, display) {
@@ -354,15 +380,32 @@ class reactNativeJanusWebrtcGateway extends Component{
         <Text style={styles.welcome}>
           {this.state.info}
         </Text>
-        <View style={{flexDirection: 'row'}}>
-          <Text>
-            {this.state.isFront ? "Use front camera" : "Use back camera"}
-          </Text>
-          <TouchableHighlight
+        <View style={{flexDirection: 'column'}}>
+            <TouchableHighlight
+            style={{borderWidth: 1, borderColor: 'black'}}
+            onPress={()=>{this.switchVideoType()}} >
+                <Text style={{fontSize: 20}}>Switch Camera</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+                style={{borderWidth: 1, borderColor: 'black'}}
+                onPress={()=>{this.toggleAudioMute()}} >
+                    <Text style={{fontSize: 20}}>Audio Mute/Unmute</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+                style={{borderWidth: 1, borderColor: 'black'}}
+                onPress={()=>{this.toggleVideoMute()}} >
+                 <Text style={{fontSize: 20}}>Video Mute/Unmute</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+            style={{borderWidth: 1, borderColor: 'black'}}
+            onPress={()=>{this.publishOwnFeed()}} >
+                <Text style={{fontSize: 20}}>Publish/Unpubish</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
             style={{borderWidth: 1, borderColor: 'black'}}
             onPress={()=>{this._switchVideoType()}} >
-            <Text>Switch camera</Text>
-          </TouchableHighlight>
+                <Text style={{fontSize: 20}}>Speaker ON/OFF</Text>
+            </TouchableHighlight>
         </View>
         <RTCView key={this.state.selfViewSrc} streamURL={this.state.selfViewSrc} style={styles.remoteView}/>
         {this.state.remoteList && Object.keys(this.state.remoteList).map((key, index) => {
