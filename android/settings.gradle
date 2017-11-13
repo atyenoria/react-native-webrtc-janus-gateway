@@ -1,4 +1,6 @@
 rootProject.name = 'reactNativeJanusWebrtcGateway'
+include ':react-native-incall-manager'
+project(':react-native-incall-manager').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-incall-manager/android')
 
 include ':WebRTCModule', ':app'
 project(':WebRTCModule').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-webrtc/android')
