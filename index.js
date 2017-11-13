@@ -39,8 +39,6 @@ let mystream = null;
 let feeds = [];
 var bitrateTimer = [];
 
-var localstream_janus
-
 Janus.init({debug: "all", callback: function() {
         if(started)
             return;
@@ -72,6 +70,7 @@ class reactNativeJanusWebrtcGateway extends Component{
             roomID: '',
             isFront: true,
             selfViewSrc: null,
+            selfViewSrcKey: null,
             remoteList: {},
             remoteListPluginHandle: {},
             textRoomConnected: false,
@@ -196,8 +195,8 @@ class reactNativeJanusWebrtcGateway extends Component{
                             }
                         },
                         onlocalstream: (stream) => {
-                            localstream_janus = stream;
                             this.setState({selfViewSrc: stream.toURL()});
+                            this.setState({selfViewSrcKey: Math.floor(Math.random() * 1000)});
                             this.setState({status: 'ready', info: 'Please enter or create room ID'});
                         },
                         onremotestream: (stream) => {
@@ -205,13 +204,16 @@ class reactNativeJanusWebrtcGateway extends Component{
                         oncleanup: () => {
                             Janus.log(" ::: Got a cleanup notification: we are unpublished now :::");
                             mystream = null;
+                           
                         }
                     });
             },
-            error: function(error) {
+            error: (error) => {
             },
-            destroyed: function() {
+            destroyed: () => {
               console.log("destoryed")
+              this.setState({ publish: false });
+            //   this.setState({selfViewSrc: null });
             }
         })
 
@@ -399,7 +401,7 @@ class reactNativeJanusWebrtcGateway extends Component{
                     <Text style={{fontSize: 20}}>Recreate Janus Session</Text>
                 </TouchableHighlight>
             </View>
-            <RTCView key={this.state.selfViewSrc} streamURL={this.state.selfViewSrc} style={styles.remoteView}/>
+            { this.state.selfViewSrc && <RTCView key={this.state.selfViewSrcKey} streamURL={this.state.selfViewSrc} style={styles.remoteView}/>}
             {this.state.remoteList && Object.keys(this.state.remoteList).map((key, index) => {
                 return <RTCView key={Math.floor(Math.random() * 1000)} streamURL={this.state.remoteList[key]} style={styles.remoteView}/>
             })
