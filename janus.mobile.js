@@ -478,7 +478,7 @@ import {
               pluginHandle.mediaState(json["type"], json["receiving"]);
           } else if(json["janus"] === "error") {
               // Oops, something wrong happened
-              Janus.error("Ooops: " + json["error"].code + " " + json["error"].reason);   // FIXME
+            //   Janus.error("Ooops: " + json["error"].code + " " + json["error"].reason);   // FIXME
               var transaction = json["transaction"];
               if(transaction !== null && transaction !== undefined) {
                   var reportSuccess = transactions[transaction];

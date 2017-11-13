@@ -1,4 +1,4 @@
-# Dependent Libary 
+# Dependent Libaries 
 - "react-native": "^0.50.3",
 - "react-native-webrtc": "^1.58.3"
 - "react-native-incall-manager": "^2.2.0",
@@ -14,6 +14,7 @@
 
 # Application
 
+
 # TODO
 - [x] iOS works
 - [ ] Android works
@@ -27,18 +28,27 @@
 - [x] Switch front and back camera with react-native-webrtc MediaStreamTrack.prototype._switchCamera()
 - [x] End call
 - [ ] Solve the delay of receving remote viedeos increases when recreating the webrtc session by unpublish/publish 
-- [x] Rerender teh video view if participants join and leave continuously
+- [x] Rerender teh remote video view if others join and leave continuously
+- [x] Rerender my video view when publishing and unpublishing
 - [ ] Rich UI
 - [ ] Refactor index.js and janus.mobile.js
 - [ ] More Details about how to use this Documentation
-- [ ] Other Janus Plugin(Audio bridge, Streaming, Sip, Call plugin)
+- [ ] PR to awesome-react-native ( https://github.com/jondot/awesome-react-native )
+- [ ] Other Janus Plugin(Audio bridge, Streaming, Sip, Video Call ... etc)
 
-# Setup
+
+# Setup for iOS and Android
 - Set up the janus with wss configured following by https://github.com/atyenoria/janus-webrtc-gateway-docker
-- Change config.example.js to config.js and edit the content as you configured about Janus
+- Change config.example.js to config.js and edit the content as you configured about Janus 
+
+
+# Setup for iOS
 - Code Signing for building on real device
 - Change the node path for you env, Build Phases -> Bundle React Native code and images ("export NODE_BINARY=/Users/jima/.nodebrew/current/bin/node")
-- Build the iOS project
+- Build the iOS project in release or debug
+
+# Setup for Android
+
 
 # License
 - MIT
