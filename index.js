@@ -25,6 +25,8 @@ import Janus from './janus.mobile.js';
 import config from './config.js';
 import InCallManager from 'react-native-incall-manager';
 
+import Spinner from 'react-native-loading-spinner-overlay';
+
 let server = config.JanusWssHost
 
 let janus;
@@ -77,16 +79,19 @@ class reactNativeJanusWebrtcGateway extends Component{
             textRoomData: [],
             textRoomValue: '',
             publish: false,
-            speaker: false
+            speaker: false,
+            visible: false
         };
     } 
 
   componentDidMount(){
+    
     InCallManager.start({ media: 'audio' });
     this.janusStart()
   }
 
   janusStart = () => {
+    this.setState({visible: true});
     janus = new Janus(
         {
             server: server,
@@ -125,6 +130,7 @@ class reactNativeJanusWebrtcGateway extends Component{
                                     myid = msg["id"];
                                     Janus.log("Successfully joined room " + msg["room"] + " with ID " + myid);
                                     this.publishOwnFeed(true);
+                                    this.setState({visible: false});
                                     // Any new feed to attach to?
                                     if(msg["publishers"] !== undefined && msg["publishers"] !== null) {
                                         var list = msg["publishers"];
@@ -317,14 +323,14 @@ class reactNativeJanusWebrtcGateway extends Component{
                         {
                             jsep: jsep,
                             media: { audioSend: false, videoSend: false },
-                            success: function(jsep) {
+                            success: (jsep) => {
                                 Janus.debug("Got SDP!");
                                 Janus.debug(jsep);
                                 var body = { "request": "start", "room": roomId };
                                 remoteFeed.send({"message": body, "jsep": jsep});
                             },
-                            error: function(error) {
-                                Janus.error("WebRTC error:", error);
+                            error: (error) => {
+                                // Janus.error("WebRTC error:", error);
 
                             }
                         });
@@ -406,6 +412,9 @@ class reactNativeJanusWebrtcGateway extends Component{
                 return <RTCView key={Math.floor(Math.random() * 1000)} streamURL={this.state.remoteList[key]} style={styles.remoteView}/>
             })
             }
+        </View>
+        <View style={{ flex: 1 }}>
+            <Spinner visible={this.state.visible} textContent={"Connecting..."} textStyle={{color: '#FFF'}} />
         </View>
       </ScrollView>
     );

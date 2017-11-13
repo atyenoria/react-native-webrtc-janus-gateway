@@ -31,6 +31,7 @@
 - [x] Rerender teh remote video view if others join and leave continuously
 - [x] Rerender my video view when publishing and unpublishing
 - [x] Switching camera works after recreating the session
+- [x] Connecting modal when creating session
 - [ ] Rich UI
 - [ ] Refactor index.js and janus.mobile.js
 - [ ] More Details about how to use this Documentation
