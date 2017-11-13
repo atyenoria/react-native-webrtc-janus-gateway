@@ -7,6 +7,7 @@ import {
   View,
   TextInput,
   ListView,
+  ScrollView
 } from 'react-native';
 
 import {
@@ -372,48 +373,50 @@ class reactNativeJanusWebrtcGateway extends Component{
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          {this.state.info}
-        </Text>
-        <View style={{flexDirection: 'column'}}>
-            <TouchableHighlight
-            style={{borderWidth: 1, borderColor: 'black'}}
-            onPress={()=>{this.switchVideoType()}} >
-                <Text style={{fontSize: 20}}>Switch Camera</Text>
-            </TouchableHighlight>
-            <TouchableHighlight
+    <ScrollView>
+        <View style={styles.container}>
+            <Text style={styles.welcome}>
+            {this.state.info}
+            </Text>
+            <View style={{flexDirection: 'column'}}>
+                <TouchableHighlight
                 style={{borderWidth: 1, borderColor: 'black'}}
-                onPress={()=>{this.toggleAudioMute()}} >
-                    <Text style={{fontSize: 20}}>Audio Mute/Unmute</Text>
-            </TouchableHighlight>
-            <TouchableHighlight
+                onPress={()=>{this.switchVideoType()}} >
+                    <Text style={{fontSize: 20}}>Switch Camera</Text>
+                </TouchableHighlight>
+                <TouchableHighlight
+                    style={{borderWidth: 1, borderColor: 'black'}}
+                    onPress={()=>{this.toggleAudioMute()}} >
+                        <Text style={{fontSize: 20}}>Audio Mute/Unmute</Text>
+                </TouchableHighlight>
+                <TouchableHighlight
+                    style={{borderWidth: 1, borderColor: 'black'}}
+                    onPress={()=>{this.toggleVideoMute()}} >
+                    <Text style={{fontSize: 20}}>Video Mute/Unmute</Text>
+                </TouchableHighlight>
+                <TouchableHighlight
                 style={{borderWidth: 1, borderColor: 'black'}}
-                onPress={()=>{this.toggleVideoMute()}} >
-                 <Text style={{fontSize: 20}}>Video Mute/Unmute</Text>
-            </TouchableHighlight>
-            <TouchableHighlight
-            style={{borderWidth: 1, borderColor: 'black'}}
-            onPress={()=>{this.publishOwnFeed()}} >
-                <Text style={{fontSize: 20}}>Publish/Unpubish</Text>
-            </TouchableHighlight>
-            <TouchableHighlight
-            style={{borderWidth: 1, borderColor: 'black'}}
-            onPress={()=>{this.toggleSpeaker()}} >
-                <Text style={{fontSize: 20}}>Speaker ON/OFF</Text>
-            </TouchableHighlight>
-            <TouchableHighlight
-            style={{borderWidth: 1, borderColor: 'black'}}
-            onPress={()=>{this.endCall()}} >
-                <Text style={{fontSize: 20}}>End Call</Text>
-            </TouchableHighlight>
+                onPress={()=>{this.publishOwnFeed()}} >
+                    <Text style={{fontSize: 20}}>Publish/Unpubish</Text>
+                </TouchableHighlight>
+                <TouchableHighlight
+                style={{borderWidth: 1, borderColor: 'black'}}
+                onPress={()=>{this.toggleSpeaker()}} >
+                    <Text style={{fontSize: 20}}>Speaker ON/OFF</Text>
+                </TouchableHighlight>
+                <TouchableHighlight
+                style={{borderWidth: 1, borderColor: 'black'}}
+                onPress={()=>{this.endCall()}} >
+                    <Text style={{fontSize: 20}}>End Call</Text>
+                </TouchableHighlight>
+            </View>
+            <RTCView key={this.state.selfViewSrc} streamURL={this.state.selfViewSrc} style={styles.remoteView}/>
+            {this.state.remoteList && Object.keys(this.state.remoteList).map((key, index) => {
+                return <RTCView key={Math.floor(Math.random() * 1000)} streamURL={this.state.remoteList[key]} style={styles.remoteView}/>
+            })
+            }
         </View>
-        <RTCView key={this.state.selfViewSrc} streamURL={this.state.selfViewSrc} style={styles.remoteView}/>
-        {this.state.remoteList && Object.keys(this.state.remoteList).map((key, index) => {
-            return <RTCView key={Math.floor(Math.random() * 1000)} streamURL={this.state.remoteList[key]} style={styles.remoteView}/>
-          })
-        }
-      </View>
+      </ScrollView>
     );
   }
 };
