@@ -27,9 +27,10 @@
 - [x] Unpublish and publish 
 - [x] Switch front and back camera with react-native-webrtc MediaStreamTrack.prototype._switchCamera()
 - [x] End call
-- [ ] Solve the delay of receving remote viedeos increases when recreating the webrtc session by unpublish/publish 
+- [x] Problem: the delay of receving remote viedeos increases when recreating the webrtc session by unpublish/publish. Soulution: use janus.destroy() for republishing instead of unpublish and publish 
 - [x] Rerender teh remote video view if others join and leave continuously
 - [x] Rerender my video view when publishing and unpublishing
+- [ ] Switch Camera works after recreating the session
 - [ ] Rich UI
 - [ ] Refactor index.js and janus.mobile.js
 - [ ] More Details about how to use this Documentation

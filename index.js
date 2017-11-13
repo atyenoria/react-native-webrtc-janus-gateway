@@ -84,6 +84,10 @@ class reactNativeJanusWebrtcGateway extends Component{
 
   componentDidMount(){
     InCallManager.start({ media: 'audio' });
+    this.janusStart()
+  }
+
+  janusStart = () => {
     janus = new Janus(
         {
             server: server,
@@ -210,6 +214,7 @@ class reactNativeJanusWebrtcGateway extends Component{
               console.log("destoryed")
             }
         })
+
   }
 
 
@@ -387,6 +392,11 @@ class reactNativeJanusWebrtcGateway extends Component{
                 style={{borderWidth: 1, borderColor: 'black'}}
                 onPress={()=>{this.endCall()}} >
                     <Text style={{fontSize: 20}}>End Call</Text>
+                </TouchableHighlight>
+                <TouchableHighlight
+                style={{borderWidth: 1, borderColor: 'black'}}
+                onPress={()=>{this.janusStart()}} >
+                    <Text style={{fontSize: 20}}>Recreate Janus Session</Text>
                 </TouchableHighlight>
             </View>
             <RTCView key={this.state.selfViewSrc} streamURL={this.state.selfViewSrc} style={styles.remoteView}/>
