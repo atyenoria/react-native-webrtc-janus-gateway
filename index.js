@@ -47,27 +47,7 @@ Janus.init({debug: "all", callback: function() {
         started = true;
 }});
 
-
-
-function toggleMute() {
-    var muted = sfutest.isAudioMuted();
-    Janus.log((muted ? "Unmuting" : "Muting") + " local stream...");
-    if(muted)
-        sfutest.unmuteAudio();
-    else
-        sfutest.muteAudio();
-    muted = sfutest.isAudioMuted();
-}
-
-function unpublishOwnFeed() {
-    var unpublish = { "request": "unpublish" };
-    sfutest.send({"message": unpublish});
-}
-
-
-
 const pcPeers = {};
-let localStream;
 
 
 function getStats() {
@@ -294,7 +274,6 @@ class reactNativeJanusWebrtcGateway extends Component{
         }else{
             this.setState({ publish: false });
             let unpublish = { "request": "unpublish" };
-            sfutest.send({"message": unpublish});
             sfutest.send({"message": unpublish});
         }
     }
