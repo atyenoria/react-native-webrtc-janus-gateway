@@ -12,6 +12,7 @@
     "react-native-elements": "^0.18.2",
     "react-native-incall-manager": "^2.2.0",
     "react-native-loading-spinner-overlay": "^0.5.2",
+    "react-native-tab-navigator": "^0.3.4",
     "react-native-vector-icons": "^4.4.2",
     "react-native-webrtc": "^1.58.3"
   },

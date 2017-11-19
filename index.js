@@ -8,7 +8,8 @@ import {
   TextInput,
   ListView,
   ScrollView,
-  Dimensions
+  Dimensions,
+  Image
 } from 'react-native';
 
 import {
@@ -28,6 +29,7 @@ import InCallManager from 'react-native-incall-manager';
 
 import Spinner from 'react-native-loading-spinner-overlay';
 import { Icon } from 'react-native-elements'
+import TabNavigator from 'react-native-tab-navigator';
 
 let server = config.JanusWssHost
 
@@ -457,6 +459,42 @@ class reactNativeJanusWebrtcGateway extends Component{
                 color='#f50'
                 onPress={() => console.log('hello')} />
         </View>
+
+        <TabNavigator>
+            <TabNavigator.Item
+                selected={this.state.selectedTab === 'home'}
+                title="Video"
+                renderIcon={() => <Icon
+                    name='projection-screen'
+                    type='foundation'
+                    iconStyle={{opacity: 0.5}}
+                    color='#f50'/> }
+                renderSelectedIcon={() => <Icon
+                    name='projection-screen'
+                    type='foundation'
+                    color='#f50'/> }
+                badgeText="1"
+                onPress={() => this.setState({ selectedTab: 'home' })}>
+                {null}
+            </TabNavigator.Item>
+            <TabNavigator.Item
+                selected={this.state.selectedTab === 'profile'}
+                title="Chat"
+                renderIcon={() => <Icon
+                    name='chat'
+                    type='entypo'
+                    iconStyle={{opacity: 0.5}}
+                    color='#f50'/> }
+                renderSelectedIcon={() => <Icon
+                    name='chat'
+                    type='entypo'
+                    color='#f50'/> }
+                renderBadge={() => null}
+                onPress={() => this.setState({ selectedTab: 'profile' })}>
+                {null}
+            </TabNavigator.Item>
+        </TabNavigator>
+
 
             
       </ScrollView>

@@ -4,6 +4,7 @@
 - "react-native-incall-manager": "^2.2.0"
 - "react-native-vector-icons": "^4.4.2"
 - "react-native-elements": "^0.18.2"
+- "react-native-tab-navigator": "^0.3.4"
 
 
 # Demo
@@ -34,6 +35,8 @@
 - [x] Rerender my video view when publishing and unpublishing
 - [x] Switching camera works after recreating the session
 - [x] Connecting modal when creating session
+- [ ] Better handling the janus session by simple redux 
+- [ ] Text Chat
 - [ ] Rich UI
 - [ ] Refactor index.js and janus.mobile.js
 - [ ] More Details about how to use this Documentation
