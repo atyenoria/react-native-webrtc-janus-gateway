@@ -56,28 +56,29 @@ Janus.init({debug: "all", callback: function() {
 class Video extends Component {
 
     constructor(props) {
-        super(props);
-        this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => true});
-        this.state ={ 
-            info: 'Initializing',
-            status: 'init',
-            roomID: '',
-            isFront: true,
-            selfViewSrc: null,
-            selfViewSrcKey: null,
-            remoteList: {},
-            remoteListPluginHandle: {},
-            textRoomConnected: false,
-            textRoomData: [],
-            textRoomValue: '',
-            publish: false,
-            speaker: false,
-            visible: false
-        };
+      super(props);
+      this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => true});
+      this.state ={ 
+        info: 'Initializing',
+        status: 'init',
+        roomID: '',
+        isFront: true,
+        selfViewSrc: null,
+        selfViewSrcKey: null,
+        remoteList: {},
+        remoteListPluginHandle: {},
+        textRoomConnected: false,
+        textRoomData: [],
+        textRoomValue: '',
+        publish: false,
+        speaker: false,
+        audioMute: false,
+        videoMute: false,
+        visible: false
+      };
     } 
 
   componentDidMount(){
-    
     InCallManager.start({ media: 'audio' });
     this.janusStart()
   }
@@ -92,9 +93,9 @@ class Video extends Component {
                     {
                         plugin: "janus.plugin.videoroom",
                         success: (pluginHandle) => {
-                            sfutest = pluginHandle;
-                            let register = { "request": "join", "room": roomId, "ptype": "publisher", "display": myusername.toString() };
-                            sfutest.send({"message": register});
+                          sfutest = pluginHandle;
+                          let register = { "request": "join", "room": roomId, "ptype": "publisher", "display": myusername.toString() };
+                          sfutest.send({"message": register});
                         },
                         error: (error) => {
                           Alert.alert("  -- Error attaching plugin...", error);
@@ -106,70 +107,70 @@ class Video extends Component {
                         webrtcState: (on) => {
                         },
                         onmessage: (msg, jsep) => {
-                            // console.log(msg)
-                            var event = msg["videoroom"];
-                            if(event != undefined && event != null) {
-                                if(event === "joined") {
-                                    myid = msg["id"];
-                                    this.publishOwnFeed(true);
-                                    this.setState({visible: false}); 
-                                    if(msg["publishers"] !== undefined && msg["publishers"] !== null) {
-                                        var list = msg["publishers"];
-                                        for(var f in list) {
-                                            var id = list[f]["id"];
-                                            var display = list[f]["display"];
-                                            this.newRemoteFeed(id, display)
-                                        }
+                          // console.log(msg)
+                          var event = msg["videoroom"];
+                          if(event != undefined && event != null) {
+                              if(event === "joined") {
+                                  myid = msg["id"];
+                                  this.publishOwnFeed(true);
+                                  this.setState({visible: false}); 
+                                  if(msg["publishers"] !== undefined && msg["publishers"] !== null) {
+                                    var list = msg["publishers"];
+                                    for(var f in list) {
+                                      var id = list[f]["id"];
+                                      var display = list[f]["display"];
+                                      this.newRemoteFeed(id, display)
                                     }
-                                } else if(event === "destroyed") {
-                                } else if(event === "event") {
-                                    if(msg["publishers"] !== undefined && msg["publishers"] !== null) {
-                                        var list = msg["publishers"];
-                                        for(var f in list) {
-                                            let id = list[f]["id"]
-                                            let display = list[f]["display"]
-                                            this.newRemoteFeed(id, display)
-                                        }  
-                                    } else if(msg["leaving"] !== undefined && msg["leaving"] !== null) {                                        
-                                        var leaving = msg["leaving"];
-                                        var remoteFeed = null;
-                                        let numLeaving = parseInt(msg["leaving"])
-                                        if(this.state.remoteList.hasOwnProperty(numLeaving)){
-                                            delete this.state.remoteList.numLeaving
-                                            this.setState({remoteList: this.state.remoteList})
-                                            this.state.remoteListPluginHandle[numLeaving].detach();
-                                            delete this.state.remoteListPluginHandle.numLeaving
-                                        }
-                                    } else if(msg["unpublished"] !== undefined && msg["unpublished"] !== null) {
-                                        var unpublished = msg["unpublished"];
-                                        if(unpublished === 'ok') {
-                                            sfutest.hangup();
-                                            return;
-                                        }
-                                        let numLeaving = parseInt(msg["unpublished"])
-                                        if(this.state.remoteList.hasOwnProperty(numLeaving)){
-                                            delete this.state.remoteList.numLeaving
-                                            this.setState({remoteList: this.state.remoteList})
-                                            this.state.remoteListPluginHandle[numLeaving].detach();
-                                            delete this.state.remoteListPluginHandle.numLeaving
-                                        }
-                                    } else if(msg["error"] !== undefined && msg["error"] !== null) {
-                                    }
+                                  }
+                              } else if(event === "destroyed") {
+                              } else if(event === "event") {
+                                if(msg["publishers"] !== undefined && msg["publishers"] !== null) {
+                                  var list = msg["publishers"];
+                                  for(var f in list) {
+                                    let id = list[f]["id"]
+                                    let display = list[f]["display"]
+                                    this.newRemoteFeed(id, display)
+                                  }  
+                                } else if(msg["leaving"] !== undefined && msg["leaving"] !== null) {                                        
+                                  var leaving = msg["leaving"];
+                                  var remoteFeed = null;
+                                  let numLeaving = parseInt(msg["leaving"])
+                                  if(this.state.remoteList.hasOwnProperty(numLeaving)){
+                                    delete this.state.remoteList.numLeaving
+                                    this.setState({remoteList: this.state.remoteList})
+                                    this.state.remoteListPluginHandle[numLeaving].detach();
+                                    delete this.state.remoteListPluginHandle.numLeaving
+                                  }
+                                } else if(msg["unpublished"] !== undefined && msg["unpublished"] !== null) {
+                                  var unpublished = msg["unpublished"];
+                                  if(unpublished === 'ok') {
+                                    sfutest.hangup();
+                                    return;
+                                  }
+                                  let numLeaving = parseInt(msg["unpublished"])
+                                  if(this.state.remoteList.hasOwnProperty(numLeaving)){
+                                    delete this.state.remoteList.numLeaving
+                                    this.setState({remoteList: this.state.remoteList})
+                                    this.state.remoteListPluginHandle[numLeaving].detach();
+                                    delete this.state.remoteListPluginHandle.numLeaving
+                                  }
+                                } else if(msg["error"] !== undefined && msg["error"] !== null) {
                                 }
-                            }
-                            if(jsep !== undefined && jsep !== null) {
-                                sfutest.handleRemoteJsep({jsep: jsep});
-                            }
+                              }
+                          }
+                          if(jsep !== undefined && jsep !== null) {
+                            sfutest.handleRemoteJsep({jsep: jsep});
+                          }
                         },
                         onlocalstream: (stream) => {
-                            this.setState({selfViewSrc: stream.toURL()});
-                            this.setState({selfViewSrcKey: Math.floor(Math.random() * 1000)});
-                            this.setState({status: 'ready', info: 'Please enter or create room ID'});
+                          this.setState({selfViewSrc: stream.toURL()});
+                          this.setState({selfViewSrcKey: Math.floor(Math.random() * 1000)});
+                          this.setState({status: 'ready', info: 'Please enter or create room ID'});
                         },
                         onremotestream: (stream) => {
                         },
                         oncleanup: () => {
-                            mystream = null;
+                          mystream = null;
                         }
                     });
             },
@@ -177,71 +178,75 @@ class Video extends Component {
               Alert.alert("  Janus Error", error);
             },
             destroyed: () => {
+              Alert.alert("  Success for End Call ");
               this.setState({ publish: false });
             }
         })
   }
 
     switchVideoType() {
-        sfutest.changeLocalCamera();
+      sfutest.changeLocalCamera();
     }
 
     toggleAudioMute = () => {
-        let muted = sfutest.isAudioMuted();
-        if(muted){
-            sfutest.unmuteAudio();
-        }else{
-            sfutest.muteAudio();
-        }
+      let muted = sfutest.isAudioMuted();
+      if(muted){
+        sfutest.unmuteAudio();
+        this.setState({ audioMute: false });
+      }else{
+        sfutest.muteAudio();
+        this.setState({ audioMute: true });
+      }
     }
 
     toggleVideoMute = () => {
-        let muted = sfutest.isVideoMuted();
-        if(muted){
-            sfutest.unmuteVideo();
-        }else{
-            sfutest.muteVideo();
-        }
+      let muted = sfutest.isVideoMuted();
+      if(muted){
+        this.setState({ videoMute: false });
+        sfutest.unmuteVideo();
+      }else{
+        this.setState({ videoMute: true });
+        sfutest.muteVideo();
+      }
     }
 
     toggleSpeaker = () => {
-        if(this.state.speaker){
-            this.setState({speaker: false});
-            InCallManager.setForceSpeakerphoneOn(false)
-        }else{
-            this.setState({speaker: true});
-            InCallManager.setForceSpeakerphoneOn(true)
-        }
+      if(this.state.speaker){
+        this.setState({speaker: false});
+        InCallManager.setForceSpeakerphoneOn(false)
+      }else{
+        this.setState({speaker: true});
+        InCallManager.setForceSpeakerphoneOn(true)
+      }
     }
 
     endCall = () => {
-        janus.destroy()
+      janus.destroy()
     }
     
-
     publishOwnFeed(useAudio){
-        if(!this.state.publish){
-            this.setState({ publish: true });
-            sfutest.createOffer(
-                {
-                    media: { audioRecv: false, videoRecv: false, audioSend: useAudio, videoSend: true},
-                    success: (jsep) => {
-                        var publish = { "request": "configure", "audio": useAudio, "video": true };
-                        sfutest.send({"message": publish, "jsep": jsep});
-                    },
-                    error: (error) => {
-                        Alert.alert("WebRTC error:", error);
-                        if (useAudio) {
-                            publishOwnFeed(false);
-                        } else {
-                        }
-                    }
-                });
-        }else{
-            this.setState({ publish: false });
-            let unpublish = { "request": "unpublish" };
-            sfutest.send({"message": unpublish});
-        }
+      if(!this.state.publish){
+        this.setState({ publish: true });
+        sfutest.createOffer(
+            {
+              media: { audioRecv: false, videoRecv: false, audioSend: useAudio, videoSend: true},
+              success: (jsep) => {
+                var publish = { "request": "configure", "audio": useAudio, "video": true };
+                sfutest.send({"message": publish, "jsep": jsep});
+              },
+              error: (error) => {
+                Alert.alert("WebRTC error:", error);
+                if (useAudio) {
+                    publishOwnFeed(false);
+                } else {
+                }
+              }
+            });
+      }else{
+        // this.setState({ publish: false });
+        // let unpublish = { "request": "unpublish" };
+        // sfutest.send({"message": unpublish});
+      }
     }
 
   newRemoteFeed(id, display) {
@@ -300,100 +305,77 @@ class Video extends Component {
             bitrateTimer[remoteFeed.rfindex] = null;
           }
         });
-    }
+  }
 
 
   render() {
     return (
     <ScrollView>
         <View style={styles.container}>
-            <Text style={styles.welcome}>
-            {this.state.info}
-            </Text>
-            <View style={{flexDirection: 'column'}}>
-                <TouchableHighlight
-                style={{borderWidth: 1, borderColor: 'black'}}
-                onPress={()=>{this.switchVideoType()}} >
-                    <Text style={{fontSize: 20}}>Switch Camera</Text>
-                </TouchableHighlight>
-                <TouchableHighlight
-                    style={{borderWidth: 1, borderColor: 'black'}}
-                    onPress={()=>{this.toggleAudioMute()}} >
-                        <Text style={{fontSize: 20}}>Audio Mute/Unmute</Text>
-                </TouchableHighlight>
-                <TouchableHighlight
-                    style={{borderWidth: 1, borderColor: 'black'}}
-                    onPress={()=>{this.toggleVideoMute()}} >
-                    <Text style={{fontSize: 20}}>Video Mute/Unmute</Text>
-                </TouchableHighlight>
-                <TouchableHighlight
-                style={{borderWidth: 1, borderColor: 'black'}}
-                onPress={()=>{this.publishOwnFeed()}} >
-                    <Text style={{fontSize: 20}}>Publish/Unpubish</Text>
-                </TouchableHighlight>
-                <TouchableHighlight
-                style={{borderWidth: 1, borderColor: 'black'}}
-                onPress={()=>{this.toggleSpeaker()}} >
-                    <Text style={{fontSize: 20}}>Speaker ON/OFF</Text>
-                </TouchableHighlight>
-                <TouchableHighlight
-                style={{borderWidth: 1, borderColor: 'black'}}
-                onPress={()=>{this.endCall()}} >
-                    <Text style={{fontSize: 20}}>End Call</Text>
-                </TouchableHighlight>
-                <TouchableHighlight
-                style={{borderWidth: 1, borderColor: 'black'}}
-                onPress={()=>{this.janusStart()}} >
-                    <Text style={{fontSize: 20}}>Recreate Janus Session</Text>
-                </TouchableHighlight>
-            </View>
             { this.state.selfViewSrc && <RTCView key={this.state.selfViewSrcKey} streamURL={this.state.selfViewSrc} style={styles.remoteView}/>}
             {this.state.remoteList && Object.keys(this.state.remoteList).map((key, index) => {
                 return <RTCView key={Math.floor(Math.random() * 1000)} streamURL={this.state.remoteList[key]} style={styles.remoteView}/>
             })
             }
         </View>
-        
-        <View style={{ flex: 1 }}>
-            <Spinner visible={this.state.visible} textContent={"Connecting..."} textStyle={{color: '#FFF'}} />
-        </View>
         <View style={{flex: 1, flexDirection: 'row'}}>
+          { this.state.audioMute ? 
             <Icon
-                raised
-                name='video'
-                type='material-community'
-                color='#f50'
-                onPress={() => console.log('hello')} />
+              raised
+              name='microphone-off'
+              type='material-community'
+              color='#f50'
+              onPress={() => this.toggleAudioMute()} /> : 
             <Icon
-                raised
-                name='video-off'
-                type='material-community'
-                color='#f50'
-                onPress={() => console.log('hello')} />
+              raised
+              name='microphone'
+              type='material-community'
+              color='#f50'
+              onPress={() => this.toggleAudioMute()} /> }
+
+          { this.state.videoMute ? 
+            <Icon
+              raised
+              name='video-off'
+              type='material-community'
+              color='#f50'
+              onPress={() => this.toggleVideoMute()} /> : 
+            <Icon
+              raised
+              name='video'
+              type='material-community'
+              color='#f50'
+              onPress={() => this.toggleVideoMute()} /> }
+
+          { this.state.speaker ? 
+            <Icon
+              raised
+              name='volume-up'
+              type='FontAwesome'
+              color='#f50'
+              onPress={() => this.toggleSpeaker()} /> : 
             <Icon
                 raised
                 name='volume-down'
                 type='FontAwesome'
                 color='#f50'
-                onPress={() => console.log('hello')} />
-            <Icon
-                raised
-                name='volume-up'
-                type='FontAwesome'
-                color='#f50'
-                onPress={() => console.log('hello')} />
-            <Icon
-                raised
-                name='video-switch'
-                type='material-community'
-                color='#f50'
-                onPress={() => console.log('hello')} />
-            <Icon
-                raised
-                name='phone-hangup'
-                type='material-community'
-                color='#f50'
-                onPress={() => console.log('hello')} />
+                onPress={() => this.toggleSpeaker()} /> }
+
+          <Icon
+            raised
+            name='video-switch'
+            type='material-community'
+            color='#f50'
+            onPress={() => this.switchVideoType()} />
+          <Icon
+            raised
+            name='phone-hangup'
+            type='material-community'
+            color='#f50'
+            onPress={() => this.endCall()} />
+        </View>
+        <View style={{ flex: 1 }}>
+          <Spinner visible={this.state.visible} textContent={"Connecting..."} textStyle={{color: '#FFF'}} />
         </View>
       </ScrollView>
     );
