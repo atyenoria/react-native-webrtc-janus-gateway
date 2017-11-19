@@ -27,7 +27,7 @@ import {
 } from 'react-native-webrtc';
 
 import Janus from './janus.mobile.js';
-import config from './config.js';
+import config from '../config.js';
 import InCallManager from 'react-native-incall-manager';
 
 import Spinner from 'react-native-loading-spinner-overlay';

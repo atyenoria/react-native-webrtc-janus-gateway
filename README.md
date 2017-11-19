@@ -39,6 +39,7 @@
 - [x] Rerender my video view when publishing and unpublishing
 - [x] Switching camera works after recreating the session
 - [x] Connecting modal when creating session
+- [x] Redux integration
 - [ ] Better handling the janus session by simple redux 
 - [ ] Text Chat
 - [ ] Rich UI
