@@ -1,3 +1,6 @@
+#Demo
+![demo](https://github.com/atyenoria/react-native-webrtc-video-chat/blob/master/demo.png "demo")
+
 # Dependent Libaries 
 - "react-native": "^0.50.3",
 - "react-native-webrtc": "^1.58.3"
@@ -7,12 +10,10 @@
 - "react-native-tab-navigator": "^0.3.4"
 - "react-native-gifted-chat": "^0.3.0"
 
-
-# Demo
-
 # Functionality
 - Janus WebRTC Gateway Video Room Implementation
-- Mobile Users can send teh audio and video msg to other paritciapnts up to 6 max (can configure in janus)
+- Mobile users can send teh audio and video msg to other paritciapnts up to 6 max (can configure in janus)
+- Friendly text chat
 
 # How it wokrs?
 

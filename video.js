@@ -228,20 +228,20 @@ class Video extends Component {
       if(!this.state.publish){
         this.setState({ publish: true });
         sfutest.createOffer(
-            {
-              media: { audioRecv: false, videoRecv: false, audioSend: useAudio, videoSend: true},
-              success: (jsep) => {
-                var publish = { "request": "configure", "audio": useAudio, "video": true };
-                sfutest.send({"message": publish, "jsep": jsep});
-              },
-              error: (error) => {
-                Alert.alert("WebRTC error:", error);
-                if (useAudio) {
-                    publishOwnFeed(false);
-                } else {
-                }
+          {
+            media: { audioRecv: false, videoRecv: false, audioSend: useAudio, videoSend: true},
+            success: (jsep) => {
+              var publish = { "request": "configure", "audio": useAudio, "video": true };
+              sfutest.send({"message": publish, "jsep": jsep});
+            },
+            error: (error) => {
+              Alert.alert("WebRTC error:", error);
+              if (useAudio) {
+                  publishOwnFeed(false);
+              } else {
               }
-            });
+            }
+          });
       }else{
         // this.setState({ publish: false });
         // let unpublish = { "request": "unpublish" };
@@ -324,13 +324,13 @@ class Video extends Component {
               raised
               name='microphone-off'
               type='material-community'
-              color='#f50'
+              color='grey'
               onPress={() => this.toggleAudioMute()} /> : 
             <Icon
               raised
               name='microphone'
               type='material-community'
-              color='#f50'
+              color='black'
               onPress={() => this.toggleAudioMute()} /> }
 
           { this.state.videoMute ? 
@@ -338,13 +338,13 @@ class Video extends Component {
               raised
               name='video-off'
               type='material-community'
-              color='#f50'
+              color='grey'
               onPress={() => this.toggleVideoMute()} /> : 
             <Icon
               raised
               name='video'
               type='material-community'
-              color='#f50'
+              color='black'
               onPress={() => this.toggleVideoMute()} /> }
 
           { this.state.speaker ? 
@@ -352,26 +352,26 @@ class Video extends Component {
               raised
               name='volume-up'
               type='FontAwesome'
-              color='#f50'
+              color='black'
               onPress={() => this.toggleSpeaker()} /> : 
             <Icon
                 raised
                 name='volume-down'
                 type='FontAwesome'
-                color='#f50'
+                color='black'
                 onPress={() => this.toggleSpeaker()} /> }
 
           <Icon
             raised
             name='video-switch'
             type='material-community'
-            color='#f50'
+            color='black'
             onPress={() => this.switchVideoType()} />
           <Icon
             raised
             name='phone-hangup'
             type='material-community'
-            color='#f50'
+            color='red'
             onPress={() => this.endCall()} />
         </View>
         <View style={{ flex: 1 }}>

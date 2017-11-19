@@ -54,15 +54,17 @@ class reactNativeJanusWebrtcGateway extends Component{
                 <TabNavigator.Item
                     selected={this.state.selectedTab === 'video'}
                     title="Video"
-                    renderIcon={() => <Icon
+                    renderIcon={() => 
+                      <Icon
                         name='projection-screen'
                         type='foundation'
                         iconStyle={{opacity: 0.5}}
-                        color='#f50'/> }
-                    renderSelectedIcon={() => <Icon
+                        color='grey'/> }
+                    renderSelectedIcon={() => 
+                      <Icon
                         name='projection-screen'
                          type='foundation'
-                        color='#f50'/> }
+                        color='black'/> }
                     badgeText="1"
                     onPress={() => this.setState({ selectedTab: 'video' })} >
                     <Video />
@@ -70,15 +72,17 @@ class reactNativeJanusWebrtcGateway extends Component{
                 <TabNavigator.Item
                     selected={this.state.selectedTab === 'chat'}
                     title="Chat"
-                    renderIcon={() => <Icon
+                    renderIcon={() => 
+                      <Icon
                         name='chat'
                         type='entypo'
                         iconStyle={{opacity: 0.5}}
-                        color='#f50'/> }
-                    renderSelectedIcon={() => <Icon
+                        color='grey'/> }
+                    renderSelectedIcon={() => 
+                      <Icon
                         name='chat'
                         type='entypo'
-                        color='#f50'/> }
+                        color='black'/> }
                     renderBadge={() => null}
                     onPress={() => this.setState({ selectedTab: 'chat' })}>
                     <Chat />
