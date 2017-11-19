@@ -7,6 +7,11 @@ import {
     MediaStreamTrack,
     getUserMedia,
   } from 'react-native-webrtc';
+
+  import {
+    Alert
+  } from 'react-native';
+
   /*
       The MIT License (MIT)
   
@@ -552,17 +557,17 @@ import {
               server = servers[serversIndex];
               if(server.indexOf("ws") === 0) {
                   websockets = true;
-                  Janus.log("Server #" + (serversIndex+1) + ": trying WebSockets to contact Janus (" + server + ")");
+                  Alert.alert("Server #" + (serversIndex+1) + ": trying WebSockets to contact Janus (" + server + ")");
               } else {
                   websockets = false;
-                  Janus.log("Server #" + (serversIndex+1) + ": trying REST API to contact Janus (" + server + ")");
+                  Alert.alert("Server #" + (serversIndex+1) + ": trying REST API to contact Janus (" + server + ")");
               }
           }
           if(websockets) {
               ws = new WebSocket(server, 'janus-protocol');
               wsHandlers = {
                   'error': function() {
-                      Janus.error("Error connecting to the Janus WebSockets server... " + server);
+                    Alert.alert("Error connecting to the Janus WebSockets server... " + server);
                       if (Array.isArray(servers)) {
                           serversIndex++;
                           if (serversIndex == servers.length) {

@@ -7,7 +7,8 @@ import {
   View,
   TextInput,
   ListView,
-  ScrollView
+  ScrollView,
+  Dimensions
 } from 'react-native';
 
 import {
@@ -427,8 +428,8 @@ const styles = StyleSheet.create({
     height: 150,
   },
   remoteView: {
-    width: 200,
-    height: 150,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height/2.35
   },
   container: {
     flex: 1,
