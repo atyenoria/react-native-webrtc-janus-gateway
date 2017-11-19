@@ -2,7 +2,7 @@
 ![demo](https://github.com/atyenoria/react-native-webrtc-video-chat/blob/master/demo.png "demo")
 
 # How it wokrs?
-
+![work](https://github.com/atyenoria/react-native-webrtc-video-chat/blob/master/work.png "work")
 
 # Application
 
@@ -41,7 +41,8 @@
 - [x] Connecting modal when creating session
 - [x] Redux integration
 - [ ] Better handling the janus session by simple redux 
-- [ ] Text Chat
+- [ ] Better restarting the the janus session by simple queue system
+- [x] Text Chat Mock
 - [ ] Rich UI
 - [ ] Refactor index.js and janus.mobile.js
 - [ ] More Details about how to use this Documentation
