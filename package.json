@@ -9,8 +9,10 @@
   "dependencies": {
     "react": "16.0.0",
     "react-native": "^0.50.3",
+    "react-native-elements": "^0.18.2",
     "react-native-incall-manager": "^2.2.0",
     "react-native-loading-spinner-overlay": "^0.5.2",
+    "react-native-vector-icons": "^4.4.2",
     "react-native-webrtc": "^1.58.3"
   },
   "devDependencies": {

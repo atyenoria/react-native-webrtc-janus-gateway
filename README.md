@@ -1,7 +1,9 @@
 # Dependent Libaries 
 - "react-native": "^0.50.3",
 - "react-native-webrtc": "^1.58.3"
-- "react-native-incall-manager": "^2.2.0",
+- "react-native-incall-manager": "^2.2.0"
+- "react-native-vector-icons": "^4.4.2"
+- "react-native-elements": "^0.18.2"
 
 
 # Demo

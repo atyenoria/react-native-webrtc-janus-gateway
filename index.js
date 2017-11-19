@@ -27,6 +27,7 @@ import config from './config.js';
 import InCallManager from 'react-native-incall-manager';
 
 import Spinner from 'react-native-loading-spinner-overlay';
+import { Icon } from 'react-native-elements'
 
 let server = config.JanusWssHost
 
@@ -414,9 +415,50 @@ class reactNativeJanusWebrtcGateway extends Component{
             })
             }
         </View>
+        
         <View style={{ flex: 1 }}>
             <Spinner visible={this.state.visible} textContent={"Connecting..."} textStyle={{color: '#FFF'}} />
         </View>
+        <View style={{flex: 1, flexDirection: 'row'}}>
+            <Icon
+                raised
+                name='video'
+                type='material-community'
+                color='#f50'
+                onPress={() => console.log('hello')} />
+            <Icon
+                raised
+                name='video-off'
+                type='material-community'
+                color='#f50'
+                onPress={() => console.log('hello')} />
+            <Icon
+                raised
+                name='volume-down'
+                type='FontAwesome'
+                color='#f50'
+                onPress={() => console.log('hello')} />
+            <Icon
+                raised
+                name='volume-up'
+                type='FontAwesome'
+                color='#f50'
+                onPress={() => console.log('hello')} />
+            <Icon
+                raised
+                name='video-switch'
+                type='material-community'
+                color='#f50'
+                onPress={() => console.log('hello')} />
+            <Icon
+                raised
+                name='phone-hangup'
+                type='material-community'
+                color='#f50'
+                onPress={() => console.log('hello')} />
+        </View>
+
+            
       </ScrollView>
     );
   }
