@@ -31,6 +31,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import { Icon } from 'react-native-elements'
 import TabNavigator from 'react-native-tab-navigator';
 import Main from './main';
+import Chat from './chat';
 
 
 class reactNativeJanusWebrtcGateway extends Component{
@@ -60,7 +61,7 @@ class reactNativeJanusWebrtcGateway extends Component{
                         color='#f50'/> }
                     renderSelectedIcon={() => <Icon
                         name='projection-screen'
-                        type='foundation'
+                         type='foundation'
                         color='#f50'/> }
                     badgeText="1"
                     onPress={() => this.setState({ selectedTab: 'video' })} >
@@ -80,7 +81,7 @@ class reactNativeJanusWebrtcGateway extends Component{
                         color='#f50'/> }
                     renderBadge={() => null}
                     onPress={() => this.setState({ selectedTab: 'chat' })}>
-                    <Main />
+                    <Chat />
                 </TabNavigator.Item>
             </TabNavigator>
             </View>

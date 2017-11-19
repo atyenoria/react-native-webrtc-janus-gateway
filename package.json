@@ -10,6 +10,7 @@
     "react": "16.0.0",
     "react-native": "^0.50.3",
     "react-native-elements": "^0.18.2",
+    "react-native-gifted-chat": "^0.3.0",
     "react-native-incall-manager": "^2.2.0",
     "react-native-loading-spinner-overlay": "^0.5.2",
     "react-native-tab-navigator": "^0.3.4",

@@ -5,6 +5,7 @@
 - "react-native-vector-icons": "^4.4.2"
 - "react-native-elements": "^0.18.2"
 - "react-native-tab-navigator": "^0.3.4"
+- "react-native-gifted-chat": "^0.3.0"
 
 
 # Demo
