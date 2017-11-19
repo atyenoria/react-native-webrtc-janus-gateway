@@ -39,7 +39,7 @@ class reactNativeJanusWebrtcGateway extends Component{
     constructor(props) {
         super(props);
         this.state = {
-			selectedTab: 'video',
+			selectedTab: 'chat',
 		}
     }
 

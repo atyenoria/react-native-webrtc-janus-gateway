@@ -12,7 +12,7 @@ import {
   Image
 } from 'react-native';
 
-import { GiftedChat } from 'react-native-gifted-chat';
+import { GiftedChat, Bubble } from 'react-native-gifted-chat';
 
 
 class Chat extends Component {
@@ -21,6 +21,9 @@ class Chat extends Component {
         super(props);
         this.state ={ 
             info: 'Initializing',
+            user: {
+              _id: 2
+            },
             messages: [
               {
                 _id: 1,
@@ -29,6 +32,16 @@ class Chat extends Component {
                 user: {
                   _id: 2,
                   name: 'React Native',
+                  avatar: 'https://facebook.github.io/react/img/logo_og.png',
+                },
+              }, 
+              {
+                _id: 2,
+                text: 'Hello dev',
+                createdAt: new Date(),
+                user: {
+                  _id: 3,
+                  name: 'atyenoria',
                   avatar: 'https://facebook.github.io/react/img/logo_og.png',
                 },
               },
@@ -45,10 +58,41 @@ class Chat extends Component {
     componentDidMount(){
     }
 
+
+    renderName = (props) => {
+      const { user: self } = this.state
+      const { user = {} } = props.currentMessage
+      const { user: pUser = {} } = props.previousMessage
+      const isSameUser = pUser._id === user._id
+      const isSelf = user._id === self._id
+      const shouldNotRenderName = isSameUser
+    
+      return shouldNotRenderName ? (
+        <View />
+      ) : (
+        <Text
+          style={[ isSelf ? styles.selfUser : styles.otherUser ]}>
+          {user.name}
+        </Text>
+      )
+    }
+
+
+    renderBubble = (props) => {
+      return (
+          <View>
+            {this.renderName(props)}
+            <Bubble {...props} />
+          </View>
+        )
+    }
+    
+
     render() {
         return(
             <GiftedChat
               messages={this.state.messages}
+              renderBubble={this.renderBubble}
               onSend={(messages) => this.onSend(messages)}
               user={{
                 _id: 1,
