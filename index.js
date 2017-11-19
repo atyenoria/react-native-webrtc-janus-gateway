@@ -1,3 +1,7 @@
+
+'use_strict'
+
+
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -33,6 +37,14 @@ import TabNavigator from 'react-native-tab-navigator';
 import Video from './video';
 import Chat from './chat';
 
+import { Provider } from 'react-redux';
+import configureStore from './configureStore'
+
+
+console.disableYellowBox = true
+const stores = configureStore()
+
+
 
 class reactNativeJanusWebrtcGateway extends Component{
 
@@ -49,6 +61,7 @@ class reactNativeJanusWebrtcGateway extends Component{
 
     render() {
         return (
+        <Provider store={stores}>
         <View style={styles.container} >
             <TabNavigator>
                 <TabNavigator.Item
@@ -89,6 +102,7 @@ class reactNativeJanusWebrtcGateway extends Component{
                 </TabNavigator.Item>
             </TabNavigator>
             </View>
+          </Provider>
         );
     }
 };

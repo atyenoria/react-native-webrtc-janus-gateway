@@ -1,5 +1,10 @@
-#Demo
+# Demo
 ![demo](https://github.com/atyenoria/react-native-webrtc-video-chat/blob/master/demo.png "demo")
+
+# How it wokrs?
+
+
+# Application
 
 # Dependent Libaries 
 - "react-native": "^0.50.3",
@@ -15,9 +20,6 @@
 - Mobile users can send teh audio and video msg to other paritciapnts up to 6 max (can configure in janus)
 - Friendly text chat
 
-# How it wokrs?
-
-# Application
 
 
 # TODO

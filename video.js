@@ -13,6 +13,8 @@ import {
   Alert
 } from 'react-native';
 
+import PropTypes from 'prop-types';
+
 import {
   RTCPeerConnection,
   RTCMediaStream,
@@ -31,6 +33,11 @@ import InCallManager from 'react-native-incall-manager';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { Icon } from 'react-native-elements'
 import TabNavigator from 'react-native-tab-navigator';
+
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import * as appAction from './action';
 
 let server = config.JanusWssHost
 
@@ -189,6 +196,7 @@ class Video extends Component {
     }
 
     toggleAudioMute = () => {
+      this.props.App.test()
       let muted = sfutest.isAudioMuted();
       if(muted){
         sfutest.unmuteAudio();
@@ -406,4 +414,22 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Video
+
+Video.propTypes = {
+  App: PropTypes.object.isRequired,
+};
+
+function select(store) {
+  return {
+    App: store.App,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+		App: bindActionCreators(appAction , dispatch)
+	};
+}
+
+export default connect(select, mapDispatchToProps)(Video);
+
