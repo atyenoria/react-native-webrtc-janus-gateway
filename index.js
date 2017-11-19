@@ -30,7 +30,7 @@ import InCallManager from 'react-native-incall-manager';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { Icon } from 'react-native-elements'
 import TabNavigator from 'react-native-tab-navigator';
-import Main from './main';
+import Video from './video';
 import Chat from './chat';
 
 
@@ -65,7 +65,7 @@ class reactNativeJanusWebrtcGateway extends Component{
                         color='#f50'/> }
                     badgeText="1"
                     onPress={() => this.setState({ selectedTab: 'video' })} >
-                    <Main />
+                    <Video />
                 </TabNavigator.Item>
                 <TabNavigator.Item
                     selected={this.state.selectedTab === 'chat'}
