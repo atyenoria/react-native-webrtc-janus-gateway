@@ -9,7 +9,8 @@ import {
   ListView,
   ScrollView,
   Dimensions,
-  Image
+  Image,
+  Alert
 } from 'react-native';
 
 import {
@@ -92,52 +93,36 @@ class Video extends Component {
                         plugin: "janus.plugin.videoroom",
                         success: (pluginHandle) => {
                             sfutest = pluginHandle;
-                            Janus.log("Plugin attached! (" + sfutest.getPlugin() + ", id=" + sfutest.getId() + ")");
-                            Janus.log("  -- This is a publisher/manager");
-                                    var register = { "request": "join", "room": roomId, "ptype": "publisher", "display": myusername.toString() };
-                                    sfutest.send({"message": register});
-                                    console.log("send msg join room")
+                            let register = { "request": "join", "room": roomId, "ptype": "publisher", "display": myusername.toString() };
+                            sfutest.send({"message": register});
                         },
                         error: (error) => {
-                            Janus.error("  -- Error attaching plugin...", error);
+                          Alert.alert("  -- Error attaching plugin...", error);
                         },
                         consentDialog: (on) => {
                         },
                         mediaState: (medium, on) => {
-                            Janus.log("Janus " + (on ? "started" : "stopped") + " receiving our " + medium);
                         },
                         webrtcState: (on) => {
-                            Janus.log("Janus says our WebRTC PeerConnection is " + (on ? "up" : "down") + " now");
                         },
                         onmessage: (msg, jsep) => {
-                            console.log(msg)
-                            Janus.debug(" ::: Got a message (publisher) :::");
-                            Janus.debug(JSON.stringify(msg));
+                            // console.log(msg)
                             var event = msg["videoroom"];
-                            Janus.debug("Event: " + event);
                             if(event != undefined && event != null) {
                                 if(event === "joined") {
-                                    // Publisher/manager created, negotiate WebRTC and attach to existing feeds, if any
                                     myid = msg["id"];
-                                    Janus.log("Successfully joined room " + msg["room"] + " with ID " + myid);
                                     this.publishOwnFeed(true);
-                                    this.setState({visible: false});
-                                    // Any new feed to attach to?
+                                    this.setState({visible: false}); 
                                     if(msg["publishers"] !== undefined && msg["publishers"] !== null) {
                                         var list = msg["publishers"];
-                                        Janus.debug("Got a list of available publishers/feeds:");
-                                        Janus.debug(list);
                                         for(var f in list) {
                                             var id = list[f]["id"];
                                             var display = list[f]["display"];
-                                            Janus.debug("  >> [" + id + "] " + display);
                                             this.newRemoteFeed(id, display)
                                         }
                                     }
                                 } else if(event === "destroyed") {
-                                    Janus.warn("The room has been destroyed!");
                                 } else if(event === "event") {
-                                    // Any new feed to attach to?
                                     if(msg["publishers"] !== undefined && msg["publishers"] !== null) {
                                         var list = msg["publishers"];
                                         for(var f in list) {
@@ -147,47 +132,32 @@ class Video extends Component {
                                         }  
                                     } else if(msg["leaving"] !== undefined && msg["leaving"] !== null) {                                        
                                         var leaving = msg["leaving"];
-                                        Janus.log("Publisher left: " + leaving);
                                         var remoteFeed = null;
                                         let numLeaving = parseInt(msg["leaving"])
-                                        
                                         if(this.state.remoteList.hasOwnProperty(numLeaving)){
                                             delete this.state.remoteList.numLeaving
                                             this.setState({remoteList: this.state.remoteList})
-
                                             this.state.remoteListPluginHandle[numLeaving].detach();
                                             delete this.state.remoteListPluginHandle.numLeaving
-                                            
                                         }
-                                        
                                     } else if(msg["unpublished"] !== undefined && msg["unpublished"] !== null) {
-                                        // One of the publishers has unpublished?
                                         var unpublished = msg["unpublished"];
-                                        Janus.log("Publisher left: " + unpublished);
                                         if(unpublished === 'ok') {
-                                            // That's us
                                             sfutest.hangup();
                                             return;
                                         }
-                                        
                                         let numLeaving = parseInt(msg["unpublished"])
-
                                         if(this.state.remoteList.hasOwnProperty(numLeaving)){
                                             delete this.state.remoteList.numLeaving
                                             this.setState({remoteList: this.state.remoteList})
-
                                             this.state.remoteListPluginHandle[numLeaving].detach();
                                             delete this.state.remoteListPluginHandle.numLeaving
-                                            
                                         }
-
                                     } else if(msg["error"] !== undefined && msg["error"] !== null) {
                                     }
                                 }
                             }
                             if(jsep !== undefined && jsep !== null) {
-                                Janus.debug("Handling SDP as well...");
-                                Janus.debug(jsep);
                                 sfutest.handleRemoteJsep({jsep: jsep});
                             }
                         },
@@ -199,24 +169,18 @@ class Video extends Component {
                         onremotestream: (stream) => {
                         },
                         oncleanup: () => {
-                            Janus.log(" ::: Got a cleanup notification: we are unpublished now :::");
                             mystream = null;
-                           
                         }
                     });
             },
             error: (error) => {
+              Alert.alert("  Janus Error", error);
             },
             destroyed: () => {
-              console.log("destoryed")
               this.setState({ publish: false });
-            //   this.setState({selfViewSrc: null });
             }
         })
-
   }
-
-
 
     switchVideoType() {
         sfutest.changeLocalCamera();
@@ -261,14 +225,12 @@ class Video extends Component {
             sfutest.createOffer(
                 {
                     media: { audioRecv: false, videoRecv: false, audioSend: useAudio, videoSend: true},
-                    success: function(jsep) {
-                        Janus.debug("Got publisher SDP!");
-                        Janus.debug(jsep);
+                    success: (jsep) => {
                         var publish = { "request": "configure", "audio": useAudio, "video": true };
                         sfutest.send({"message": publish, "jsep": jsep});
                     },
-                    error: function(error) {
-                        Janus.error("WebRTC error:", error);
+                    error: (error) => {
+                        Alert.alert("WebRTC error:", error);
                         if (useAudio) {
                             publishOwnFeed(false);
                         } else {
@@ -286,70 +248,57 @@ class Video extends Component {
     let remoteFeed = null;
     janus.attach(
         {
-            plugin: "janus.plugin.videoroom",
-            success: (pluginHandle) => {
-                remoteFeed = pluginHandle;
-                Janus.log("Plugin attached! (" + remoteFeed.getPlugin() + ", id=" + remoteFeed.getId() + ")");
-                Janus.log("  -- This is a subscriber");
-                let listen = { "request": "join", "room": roomId, "ptype": "listener", "feed": id };
-                remoteFeed.send({"message": listen});
-            },
-            error: (error) => {
-                Janus.error("  -- Error attaching plugin...", error);
-            },
-            onmessage: (msg, jsep) => {
-                Janus.debug(" ::: Got a message (listener) :::");
-                Janus.debug(JSON.stringify(msg));
-                let event = msg["videoroom"];
-                Janus.debug("Event: " + event);
-                if(event != undefined && event != null) {
-                    if(event === "attached") {
-                        // Subscriber created and attached
-                    }
+          plugin: "janus.plugin.videoroom",
+          success: (pluginHandle) => {
+              remoteFeed = pluginHandle;
+              let listen = { "request": "join", "room": roomId, "ptype": "listener", "feed": id };
+              remoteFeed.send({"message": listen});
+          },
+          error: (error) => {
+              Alert.alert("  -- Error attaching plugin...", error);
+          },
+          onmessage: (msg, jsep) => {
+              let event = msg["videoroom"];
+              if(event != undefined && event != null) {
+                if(event === "attached") {
+                    // Subscriber created and attached
                 }
-                if(jsep !== undefined && jsep !== null) {
-                    Janus.debug("Handling SDP as well...");
-                    Janus.debug(jsep);
-                    remoteFeed.createAnswer(
-                        {
-                            jsep: jsep,
-                            media: { audioSend: false, videoSend: false },
-                            success: (jsep) => {
-                                Janus.debug("Got SDP!");
-                                Janus.debug(jsep);
-                                var body = { "request": "start", "room": roomId };
-                                remoteFeed.send({"message": body, "jsep": jsep});
-                            },
-                            error: (error) => {
-                                // Janus.error("WebRTC error:", error);
-
-                            }
-                        });
-                }
-            },
-            webrtcState: (on) => {
-                Janus.log("Janus says this WebRTC PeerConnection (feed #" + remoteFeed.rfindex + ") is " + (on ? "up" : "down") + " now");
-            },
-            onlocalstream: (stream) => {
-            },
-            onremotestream: (stream) => {
-                    console.log('onaddstream', stream);
-                    this.setState({info: 'One peer join!'});
-                    const remoteList = this.state.remoteList;
-                    const remoteListPluginHandle = this.state.remoteListPluginHandle;
-                    remoteList[id] = stream.toURL();
-                    remoteListPluginHandle[id] = remoteFeed
-                    this.setState({ remoteList: remoteList, remoteListPluginHandle: remoteListPluginHandle });
-            },
-            oncleanup: () => {
-                Janus.log(" ::: Got a cleanup notification (remote feed " + id + ") :::");
-                if(remoteFeed.spinner !== undefined && remoteFeed.spinner !== null)
-                    remoteFeed.spinner.stop();
-                remoteFeed.spinner = null;
-                if(bitrateTimer[remoteFeed.rfindex] !== null && bitrateTimer[remoteFeed.rfindex] !== null)
-                    clearInterval(bitrateTimer[remoteFeed.rfindex]);
-                bitrateTimer[remoteFeed.rfindex] = null;
-            }
+              }
+              if(jsep !== undefined && jsep !== null) {
+                remoteFeed.createAnswer(
+                  {
+                    jsep: jsep,
+                    media: { audioSend: false, videoSend: false },
+                    success: (jsep) => {
+                        var body = { "request": "start", "room": roomId };
+                        remoteFeed.send({"message": body, "jsep": jsep});
+                    },
+                    error: (error) => {
+                      Alert.alert("WebRTC error:", error)
+                    } 
+                  });
+              }
+          },
+          webrtcState: (on) => {
+          },
+          onlocalstream: (stream) => {
+          },
+          onremotestream: (stream) => {
+            this.setState({info: 'One peer join!'});
+            const remoteList = this.state.remoteList;
+            const remoteListPluginHandle = this.state.remoteListPluginHandle;
+            remoteList[id] = stream.toURL();
+            remoteListPluginHandle[id] = remoteFeed
+            this.setState({ remoteList: remoteList, remoteListPluginHandle: remoteListPluginHandle });
+          },
+          oncleanup: () => {
+            if(remoteFeed.spinner !== undefined && remoteFeed.spinner !== null)
+              remoteFeed.spinner.stop();
+            remoteFeed.spinner = null;
+            if(bitrateTimer[remoteFeed.rfindex] !== null && bitrateTimer[remoteFeed.rfindex] !== null)
+              clearInterval(bitrateTimer[remoteFeed.rfindex]);
+            bitrateTimer[remoteFeed.rfindex] = null;
+          }
         });
     }
 
