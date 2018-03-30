@@ -24,7 +24,7 @@
 
 # TODO
 - [x] iOS works
-- [ ] Android works
+- [x] Android works
 - [x] Janus Plugin Demo: Video Room works ( https://janus.conf.meetecho.com/videoroomtest.html )
 - [x] Local camera view
 - [x] Remote view

@@ -16,7 +16,7 @@
     "react-native-loading-spinner-overlay": "^0.5.2",
     "react-native-tab-navigator": "^0.3.4",
     "react-native-vector-icons": "^4.4.2",
-    "react-native-webrtc": "^1.58.3",
+    "react-native-webrtc": "git+https://github.com/atyenoria/react-native-webrtc.git",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
